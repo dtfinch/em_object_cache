@@ -130,7 +130,7 @@ class EMObjectCache
 		if (!empty($engines)) {
 			foreach ($engines as $engine) {
 				if ($engine[2]) {
-					add_submenu_page('em-object-cache/pages/options-object-cache.php', sprintf(__('%1$s Options', 'emobjectcache'), $engine[3]), $engine[3], 'manage_options', "em-object-cache/pages/options.{$engine[1]}.php");
+					add_submenu_page('em-object-cache/pages/options-object-cache.php', sprintf(__('%1$s Options', 'emobjectcache'), $engine[3]), $engine[3], 'manage_options', "em-object-cache/pages/{$engine[1]}.php");
 				}
 			}
 		}
