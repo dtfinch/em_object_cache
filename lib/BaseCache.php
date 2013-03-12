@@ -1,5 +1,7 @@
 <?php
 
+if (!class_exists('EMOCBaseCache', false)) :
+
 class EMOCBaseCache
 {
 	protected $cache = array();
@@ -247,3 +249,5 @@ class EMOCBaseCache
 		$this->np_groups = array();
 	}
 }
+
+endif;
