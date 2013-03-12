@@ -17,17 +17,16 @@ Unlike DB Cache/DB Cache Reloaded, the plugin will work in the Admin Panel and s
 
 ## Installation
 
-  # Upload `em-object-cache` folder to the `wp-content/plugins/` directory.
-  # Please make sure that `wp-content` directory is writable by the web server: the plugin will need to copy `object-cache.php` file into it.
-  # Please make sure that `wp-content/plugins/object-cache` directory is writable by the web server: the plugin will store its configuration (`options.php`) there.
-  # Activate the plugin in the 'Plugins' menu in WordPress.
-  # Make sure that `wp-content/object-cache.php` file exists. If it is not, please copy it from `wp-content/plugins/wp-file-cache/object-cache.php`
-  # `wp-content/object-cache.php` file wust me writable by the server since plugin stores its options in that file.
-  # That's all :-)
+  1. Upload `em-object-cache` folder to the `wp-content/plugins/` directory.
+  2. Please make sure that `wp-content` directory is writable by the web server: the plugin will need to copy `object-cache.php` file into it.
+  3. Please make sure that `wp-content/plugins/object-cache` directory is writable by the web server: the plugin will store its configuration (`options.php`) there.
+  4. Activate the plugin in the 'Plugins' menu in WordPress.
+  5. Make sure that `wp-content/object-cache.php` file exists. If it is not, please copy it from `wp-content/plugins/em-object-cache/object-cache.php`
+  6. `wp-content/object-cache.php` file wust me writable by the server since plugin stores its options in that file.
+  7. That's all :-)
 
 ## Deactivation/Removal
 
-  # Please make sure that `wp-content` directory is writable by the web server: the plugin will need to delete `object-cache.php` from it.
-  # Deactivate/uninstall the plugin through the 'Plugins' menu in WordPress.
-  # Please verify that `wp-content/object-cache.php` file was removed.
-
+  1. Please make sure that `wp-content` directory is writable by the web server: the plugin will need to delete `object-cache.php` from it.
+  2. Deactivate/uninstall the plugin in the 'Plugins' menu in WordPress.
+  3. Please verify that `wp-content/object-cache.php` file was removed.
