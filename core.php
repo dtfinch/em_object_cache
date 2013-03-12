@@ -44,7 +44,7 @@ class EMObjectCache
 			add_action('admin_menu', array($this, 'admin_menu'));
 			add_action('admin_init', array($this, 'admin_init'));
 
-			load_plugin_textdomain('emobjectcache', PLUGINDIR . '/em-object-cache/lang');
+			load_plugin_textdomain('emobjectcache', false, 'em-object-cache/lang');
 		}
 	}
 
