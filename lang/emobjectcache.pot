@@ -1,0 +1,223 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: vladimir@extrememember.com\n"
+"POT-Creation-Date: 2013-03-12 13:39+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../core.php:126
+msgid "EM Object Cache"
+msgstr ""
+
+#: ../core.php:127
+msgid "Generic Options"
+msgstr ""
+
+#: ../core.php:133
+#, php-format
+msgid "%1$s Options"
+msgstr ""
+
+#: ../pages/ApcCache.php:2
+msgid "APC Caching Engine Options"
+msgstr ""
+
+#: ../pages/ApcCache.php:10 ../pages/eAcceleratorCache.php:10
+#: ../pages/Memcached.php:10 ../pages/Memcache.php:10 ../pages/xCache.php:10
+msgid "Prefix (must be unique for every site)"
+msgstr ""
+
+#: ../pages/ApcCache.php:12 ../pages/eAcceleratorCache.php:12
+#: ../pages/FileCache.php:18 ../pages/Memcached.php:12
+#: ../pages/Memcache.php:12 ../pages/xCache.php:12
+#: ../pages/ZendDiskCache.php:12 ../pages/ZendShmCache.php:12
+#, php-format
+msgid "Default value is <code>%1$s</code>"
+msgstr ""
+
+#: ../pages/ApcCache.php:21 ../pages/eAcceleratorCache.php:21
+#: ../pages/FileCache.php:27 ../pages/Memcached.php:37
+#: ../pages/Memcache.php:38 ../pages/options-object-cache.php:57
+#: ../pages/xCache.php:21 ../pages/ZendDiskCache.php:21
+#: ../pages/ZendShmCache.php:21
+msgid "Save Changes"
+msgstr ""
+
+#: ../pages/eAcceleratorCache.php:2
+msgid "eAccelerator Caching Engine Options"
+msgstr ""
+
+#: ../pages/FileCache.php:2
+msgid "FileCache Caching Engine Options"
+msgstr ""
+
+#: ../pages/FileCache.php:10
+msgid "Cache path"
+msgstr ""
+
+#: ../pages/FileCache.php:14
+msgid ""
+"If at all possible, try to place the cache to a RAM drive (or <code>/dev/"
+"shm</code> in Linux)."
+msgstr ""
+
+#: ../pages/FileCache.php:15
+msgid ""
+"For security reasons the cache should be located outside the web root and be "
+"inaccessible from the web."
+msgstr ""
+
+#: ../pages/FileCache.php:16
+msgid ""
+"It is extremely important that the cache directory <strong>be writable by "
+"the server</strong>!"
+msgstr ""
+
+#: ../pages/Memcached.php:2
+msgid "Memcached Caching Engine Options"
+msgstr ""
+
+#: ../pages/Memcached.php:15 ../pages/Memcache.php:15
+msgid "Memcached server"
+msgstr ""
+
+#: ../pages/Memcached.php:19 ../pages/Memcache.php:19
+msgid "Host:"
+msgstr ""
+
+#: ../pages/Memcached.php:20 ../pages/Memcache.php:20
+msgid "Port:"
+msgstr ""
+
+#: ../pages/Memcached.php:21 ../pages/Memcache.php:21
+msgid "Weight:"
+msgstr ""
+
+#: ../pages/Memcached.php:24 ../pages/Memcache.php:24
+msgid "Add"
+msgstr ""
+
+#: ../pages/Memcached.php:27 ../pages/Memcache.php:28
+msgid "To delete a server, clear the <code>Host</code> field."
+msgstr ""
+
+#: ../pages/Memcache.php:2
+msgid "Memcache Caching Engine Options"
+msgstr ""
+
+#: ../pages/Memcache.php:27
+msgid ""
+"You can use UNIX socket instead of the host name; in this case please set "
+"the port to 0."
+msgstr ""
+
+#: ../pages/options-object-cache.php:10
+msgid "Enable WordPress Object Cache"
+msgstr ""
+
+#: ../pages/options-object-cache.php:13
+msgid "Disabling WordPress Object Cache can make WordPress crawl!"
+msgstr ""
+
+#: ../pages/options-object-cache.php:14
+msgid ""
+"If you disable WordPress Object Cache, caching will be completely disabled, "
+"and WordPress will have to use the database every time it needs data. This "
+"is really slow."
+msgstr ""
+
+#: ../pages/options-object-cache.php:15
+msgid "This can be useful only if you are a WordPress developer."
+msgstr ""
+
+#: ../pages/options-object-cache.php:19
+msgid "Save cached data across sessions"
+msgstr ""
+
+#: ../pages/options-object-cache.php:22
+msgid ""
+"If this option is set, EM Object Cache will maintain its cache between "
+"sessions to improve overall performance. Actually, this is what this plugin "
+"was made for and we strongly recommend that you do not turn this option off."
+msgstr ""
+
+#: ../pages/options-object-cache.php:23
+msgid ""
+"<strong>Boring technical details:</strong> EM Object Cache will save only "
+"those data that were not marked as 'non-persistent'."
+msgstr ""
+
+#: ../pages/options-object-cache.php:27
+msgid "Cache engine"
+msgstr ""
+
+#: ../pages/options-object-cache.php:38
+msgid "Non-persistent groups"
+msgstr ""
+
+#: ../pages/options-object-cache.php:41
+msgid ""
+"Comma separated list of the cache groups which should never be stored across "
+"sessions."
+msgstr ""
+
+#: ../pages/options-object-cache.php:45
+msgid "Maximum TTL"
+msgstr ""
+
+#: ../pages/options-object-cache.php:48
+msgid ""
+"<code>0</code> is engine dependent and not recommended unless you have much "
+"memory allocated for the cache."
+msgstr ""
+
+#: ../pages/options-object-cache.php:65
+msgid "Purge Cache"
+msgstr ""
+
+#: ../pages/options-object-cache.php:65
+msgid "Are you sure?"
+msgstr ""
+
+#: ../pages/xCache.php:2
+msgid "xCache Caching Engine Options"
+msgstr ""
+
+#: ../pages/ZendDiskCache.php:2
+msgid "ZDC Caching Engine Options"
+msgstr ""
+
+#: ../pages/ZendDiskCache.php:10 ../pages/ZendShmCache.php:10
+msgid "Namespace (must be unique for every site)"
+msgstr ""
+
+#: ../pages/ZendShmCache.php:2
+msgid "ZSC Caching Engine Options"
+msgstr ""
+
+#: ../lib/PageHandlers.php:51 ../lib/PageHandlers.php:99
+msgid "The settings have been updated."
+msgstr ""
+
+#: ../lib/PageHandlers.php:56 ../lib/PageHandlers.php:110
+#, php-format
+msgid ""
+"Unable to write to <code>%1$s</code>. Please make sure that it is writable "
+"by the server."
+msgstr ""
+
+#: ../lib/PageHandlers.php:103
+msgid "The cache has been cleared."
+msgstr ""

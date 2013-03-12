@@ -1,0 +1,248 @@
+# SJ Object Cache Language File.
+# Copyright (C) 2009-2010 Vladimir Kolesnikov
+# This file is distributed under the BSD license
+# Vladimir Kolesnikov <vladimir@free-sevastopol.com>, 2009-2010.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SJ Object Cache 1.3\n"
+"Report-Msgid-Bugs-To: vladimir@extrememember.com\n"
+"POT-Creation-Date: 2013-03-12 13:39+0200\n"
+"PO-Revision-Date: 2010-01-03 21:07+0200\n"
+"Last-Translator: Vladimir Kolesnikov <vladimir@free-sevastopol.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../core.php:126
+#, fuzzy
+msgid "EM Object Cache"
+msgstr "SJ Object Cache"
+
+#: ../core.php:127
+msgid "Generic Options"
+msgstr "Общие настройки"
+
+#: ../core.php:133
+#, php-format
+msgid "%1$s Options"
+msgstr "Настройки %1$s"
+
+#: ../pages/ApcCache.php:2
+msgid "APC Caching Engine Options"
+msgstr "Настройки кэширующего модуля APC"
+
+#: ../pages/ApcCache.php:10 ../pages/eAcceleratorCache.php:10
+#: ../pages/Memcached.php:10 ../pages/Memcache.php:10 ../pages/xCache.php:10
+msgid "Prefix (must be unique for every site)"
+msgstr "Префикс (должен быть уникальным для каждого сайта)"
+
+#: ../pages/ApcCache.php:12 ../pages/eAcceleratorCache.php:12
+#: ../pages/FileCache.php:18 ../pages/Memcached.php:12
+#: ../pages/Memcache.php:12 ../pages/xCache.php:12
+#: ../pages/ZendDiskCache.php:12 ../pages/ZendShmCache.php:12
+#, php-format
+msgid "Default value is <code>%1$s</code>"
+msgstr "Значение по умолчанию: <code>%1$s</code>"
+
+#: ../pages/ApcCache.php:21 ../pages/eAcceleratorCache.php:21
+#: ../pages/FileCache.php:27 ../pages/Memcached.php:37
+#: ../pages/Memcache.php:38 ../pages/options-object-cache.php:57
+#: ../pages/xCache.php:21 ../pages/ZendDiskCache.php:21
+#: ../pages/ZendShmCache.php:21
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: ../pages/eAcceleratorCache.php:2
+msgid "eAccelerator Caching Engine Options"
+msgstr "Настройки кэширующего модуля eAccelerator"
+
+#: ../pages/FileCache.php:2
+msgid "FileCache Caching Engine Options"
+msgstr "Настройки кэширующего модуля FileCache"
+
+#: ../pages/FileCache.php:10
+msgid "Cache path"
+msgstr "Путь к кэшу"
+
+#: ../pages/FileCache.php:14
+msgid ""
+"If at all possible, try to place the cache to a RAM drive (or <code>/dev/"
+"shm</code> in Linux)."
+msgstr ""
+"Если имеется возможность, расположите кэш на RAM-диске (или <code>/dev/shm</"
+"code> в Linux)."
+
+#: ../pages/FileCache.php:15
+msgid ""
+"For security reasons the cache should be located outside the web root and be "
+"inaccessible from the web."
+msgstr ""
+"В целях безопасности кэш должен располагаться вне корня сайта и быть "
+"недоступным из web"
+
+#: ../pages/FileCache.php:16
+msgid ""
+"It is extremely important that the cache directory <strong>be writable by "
+"the server</strong>!"
+msgstr ""
+"Очень важно, чтобы web-сервер <strong>имел права на запись</strong> в "
+"каталог с кэшем"
+
+#: ../pages/Memcached.php:2
+msgid "Memcached Caching Engine Options"
+msgstr "Настройки кэширующего модуля Memcached"
+
+#: ../pages/Memcached.php:15 ../pages/Memcache.php:15
+msgid "Memcached server"
+msgstr "Сервер Memcached"
+
+#: ../pages/Memcached.php:19 ../pages/Memcache.php:19
+msgid "Host:"
+msgstr "Хост:"
+
+#: ../pages/Memcached.php:20 ../pages/Memcache.php:20
+msgid "Port:"
+msgstr "Порт:"
+
+#: ../pages/Memcached.php:21 ../pages/Memcache.php:21
+msgid "Weight:"
+msgstr "Приоритет:"
+
+#: ../pages/Memcached.php:24 ../pages/Memcache.php:24
+msgid "Add"
+msgstr "Добавить"
+
+#: ../pages/Memcached.php:27 ../pages/Memcache.php:28
+msgid "To delete a server, clear the <code>Host</code> field."
+msgstr "Чтобы удалить сервер, очистите поле <code>Хост</code>."
+
+#: ../pages/Memcache.php:2
+msgid "Memcache Caching Engine Options"
+msgstr "Настройки кэширующего модуля Memcache"
+
+#: ../pages/Memcache.php:27
+msgid ""
+"You can use UNIX socket instead of the host name; in this case please set "
+"the port to 0."
+msgstr ""
+"Вместо имени хоста Вы можете задать UNIX-сокет; в этом случае установите, "
+"пожалуйста, порт в 0"
+
+#: ../pages/options-object-cache.php:10
+msgid "Enable WordPress Object Cache"
+msgstr "Включить объектный кэш WordPress"
+
+#: ../pages/options-object-cache.php:13
+msgid "Disabling WordPress Object Cache can make WordPress crawl!"
+msgstr ""
+"Отключение объектного кэша WordPress может привести к сильному замедлению "
+"работы WordPress!"
+
+#: ../pages/options-object-cache.php:14
+msgid ""
+"If you disable WordPress Object Cache, caching will be completely disabled, "
+"and WordPress will have to use the database every time it needs data. This "
+"is really slow."
+msgstr ""
+"Если Вы отключите объектный кэш WordPress, кэширование будет полностью "
+"выключено, и WordPress будет обращаться к базе данных каждый раз, когда ему "
+"нужны данные. Это будет невероятно медленно."
+
+#: ../pages/options-object-cache.php:15
+msgid "This can be useful only if you are a WordPress developer."
+msgstr "Данная опция полезна только разработчикам WordPress."
+
+#: ../pages/options-object-cache.php:19
+msgid "Save cached data across sessions"
+msgstr "Сохранять кэш между сессиями"
+
+#: ../pages/options-object-cache.php:22
+msgid ""
+"If this option is set, EM Object Cache will maintain its cache between "
+"sessions to improve overall performance. Actually, this is what this plugin "
+"was made for and we strongly recommend that you do not turn this option off."
+msgstr ""
+"Если данная опция включена, EM Object Cache будет сохранять кэш между "
+"сессиями, что позволит улучшить производительность. Собственно, это то, ради "
+"чего данный плагин и был написан. Поэтому мы не рекомендуем отключать данную "
+"опцию."
+
+#: ../pages/options-object-cache.php:23
+msgid ""
+"<strong>Boring technical details:</strong> EM Object Cache will save only "
+"those data that were not marked as 'non-persistent'."
+msgstr ""
+"<strong>Скучные технические детали:</strong> данные, помеченные как &quot;"
+"несохраняемые&quot; сохраняться не будут. Что вполне логично."
+
+#: ../pages/options-object-cache.php:27
+msgid "Cache engine"
+msgstr "Кэширующий модуль"
+
+#: ../pages/options-object-cache.php:38
+msgid "Non-persistent groups"
+msgstr "Несохраняемые группы"
+
+#: ../pages/options-object-cache.php:41
+msgid ""
+"Comma separated list of the cache groups which should never be stored across "
+"sessions."
+msgstr ""
+"Список групп, разделённых запятыми, которые не должны сохраняться между "
+"сессиями."
+
+#: ../pages/options-object-cache.php:45
+msgid "Maximum TTL"
+msgstr "Максимальное время жизни"
+
+#: ../pages/options-object-cache.php:48
+msgid ""
+"<code>0</code> is engine dependent and not recommended unless you have much "
+"memory allocated for the cache."
+msgstr ""
+"Поведение при нулевом значении зависит от кэширующего модуля и в общем "
+"случае не рекомендуется, если Вы не выделили большое количество памяти под "
+"кэш."
+
+#: ../pages/options-object-cache.php:65
+msgid "Purge Cache"
+msgstr "Очистить кэш"
+
+#: ../pages/options-object-cache.php:65
+msgid "Are you sure?"
+msgstr "Вы уверены?"
+
+#: ../pages/xCache.php:2
+msgid "xCache Caching Engine Options"
+msgstr "Настройки кэширующего модуля xCache"
+
+#: ../pages/ZendDiskCache.php:2
+msgid "ZDC Caching Engine Options"
+msgstr "Настройки кэширующего модуля ZDC"
+
+#: ../pages/ZendDiskCache.php:10 ../pages/ZendShmCache.php:10
+msgid "Namespace (must be unique for every site)"
+msgstr "Пространство имён (должно быть уникально для каждого сайта)"
+
+#: ../pages/ZendShmCache.php:2
+msgid "ZSC Caching Engine Options"
+msgstr "Настройки кэширующего модуля ZSC"
+
+#: ../lib/PageHandlers.php:51 ../lib/PageHandlers.php:99
+msgid "The settings have been updated."
+msgstr "Настройки обновлены."
+
+#: ../lib/PageHandlers.php:56 ../lib/PageHandlers.php:110
+#, php-format
+msgid ""
+"Unable to write to <code>%1$s</code>. Please make sure that it is writable "
+"by the server."
+msgstr ""
+"Невозможно записать данные в файл <code>%1$s</code>. Убедитесь, что PHP "
+"иммет необходимые права на запись в файл."
+
+#: ../lib/PageHandlers.php:103
+msgid "The cache has been cleared."
+msgstr "Кэш очищен."
