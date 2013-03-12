@@ -47,7 +47,7 @@ else {
 			$exists = function_exists('wp_suspend_cache_addition');
 		}
 
-		if (!exists || !wp_suspend_cache_addition()) {
+		if (!$exists || !wp_suspend_cache_addition()) {
 			global $wp_object_cache;
 			if (empty($group)) { $group = 'default'; }
 			return $wp_object_cache->add($key, $data, $group, $expire);
