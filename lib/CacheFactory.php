@@ -14,9 +14,9 @@ final class EMOCCacheFactory
 		}
 
 		if (function_exists($checker) || class_exists($checker, true)) {
-			if (file_exists(self::$path . '/class.' . $file . '.php')) {
+			if (file_exists(self::$path . DIRECTORY_SEPARATOR . $file . '.php')) {
 				if ($force) {
-					include_once(self::$path . '/class.' . $file . '.php');
+					include_once(self::$path . DIRECTORY_SEPARATOR . $file . '.php');
 				}
 
 				self::$engines[$id] = array($classname, $file, $has_options, $pretty);
@@ -48,7 +48,7 @@ final class EMOCCacheFactory
 			$item = self::$engines[$engine];
 		}
 
-		include(self::$path . '/class.' . $item[1] . '.php');
+		include(self::$path . DIRECTORY_SEPARATOR . $item[1] . '.php');
 		$params = isset($options['options'][$engine]) ? $options['options'][$engine] : array();
 
 		return call_user_func(array($item[0], 'instance'), $params, $enabled, $persist, $maxttl);

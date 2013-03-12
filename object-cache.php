@@ -4,10 +4,10 @@
 defined('ABSPATH') or die();
 
 if (defined('WP_PLUGIN_DIR')) {
-	$result = @include_once(WP_PLUGIN_DIR . '/em-object-cache/lib/class.CacheFactory.php');
+	$result = @include_once(WP_PLUGIN_DIR . '/em-object-cache/lib/CacheFactory.php');
 }
 else {
-	$result = @include_once(WP_CONTENT_DIR . '/plugins/em-object-cache/lib/class.CacheFactory.php');
+	$result = @include_once(WP_CONTENT_DIR . '/plugins/em-object-cache/lib/CacheFactory.php');
 }
 
 if (false === $result) {
