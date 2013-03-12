@@ -61,7 +61,7 @@ class EMOCPageHandlers
 		$options = EMObjectCache::instance()->getOptions();
 		$matches = array();
 
-		if (preg_match('!^em-object-cache/pages/options\\.([^.]+)\\.php$!', stripslashes($_GET['page']), $matches)) {
+		if (preg_match('!^em-object-cache/pages/([^.]+)\\.php$!', stripslashes($_GET['page']), $matches)) {
 			$file = $matches[1];
 			unset($matches);
 			$engines = EMOCCacheFactory::getEngines();

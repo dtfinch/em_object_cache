@@ -8,7 +8,7 @@
 			<tbody>
 				<tr>
 					<th scope="row" width="250"><?php _e("Prefix (must be unique for every site)", 'emobjectcache'); ?></th>
-					<td><input type="text" name="options[prefix]" value="<?php echo esc_attr(false == empty($params['options']['prefix']) ? $params['options']['prefix'] : ''); ?>"/></td>
+					<td><input type="text" name="options[prefix]" value="<?php echo esc_attr(!empty($params['options']['prefix']) ? $params['options']['prefix'] : ''); ?>"/></td>
 					<td><?php echo sprintf(__('Default value is <code>%1$s</code>', 'emobjectcache'), md5($_SERVER['HTTP_HOST'])); ?></td>
 				</tr>
 			</tbody>
