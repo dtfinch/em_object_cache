@@ -35,10 +35,8 @@ final class EMOCFileCache extends EMOCBaseCache
 		parent::close();
 	}
 
-	public function delete($key, $group = 'default')
+	protected function do_delete($key, $group)
 	{
-		parent::delete($key, $group);
-
 		if ($this->persist && !isset($this->np_groups[$group])) {
 			$fname = $this->getKey($group, $key);
 			return @unlink($fname);
@@ -70,50 +68,31 @@ final class EMOCFileCache extends EMOCBaseCache
 		}
 	}
 
-	public function flush()
+	protected function do_flush()
 	{
 		$this->remove_dir($this->dir, false);
 		$this->known_groups = array();
-		parent::flush();
 	}
 
-	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	protected function do_get($group, $key, &$found, $ttl)
 	{
+		$fname = $this->getKey($group, $key);
+		$dir   = $this->getKey($group);
+		if (is_readable($fname) && filemtime($fname) > time() - $ttl) {
+			settype($fname, 'string');
+			$found  = true;
+			$result = @file_get_contents($fname, LOCK_EX);
+			$this->known_groups[$dir] = true;
+			return $result;
+		}
+
+		@unlink($fname);
 		$found = false;
-		if (!$this->enabled) {
-			return false;
-		}
-
-		if (!$force) {
-			$result = $this->fast_get($key, $group, $found);
-			if ($found) {
-				return $result;
-			}
-		}
-
-		if ($this->persist && !isset($this->np_groups[$group])) {
-			$fname = $this->getKey($group, $key);
-			$dir   = $this->getKey($group);
-			if (is_readable($fname)) {
-				if (filemtime($fname) > time() - $ttl) {
-					settype($fname, 'string');
-					$found  = true;
-					$result = unserialize(@file_get_contents($fname, LOCK_EX));
-					parent::fast_set($key, $result, $group, 0);
-					$this->known_groups[$dir] = true;
-					return $result;
-				}
-			}
-
-			@unlink($fname);
-		}
-
 		return false;
 	}
 
-	protected function fast_set($key, $data, $group, $ttl)
+	protected function do_set($key, $data, $group, $ttl)
 	{
-		parent::fast_set($key, $data, $group, $ttl);
 		$dir   = $this->getKey($group, false);
 		$fname = $this->getKey($group, $key);
 
@@ -125,7 +104,7 @@ final class EMOCFileCache extends EMOCBaseCache
 			$this->known_groups[$dir] = true;
 		}
 
-		return false !== @file_put_contents($fname, serialize($data), LOCK_EX);
+		return false !== @file_put_contents($fname, $data, LOCK_EX);
 	}
 
 	protected function getKey($group, $key = false)

@@ -34,13 +34,12 @@ final class EMOCEAcceleratorCache extends EMOCBaseCache
 		parent::__construct($data, $enabled, $persist, $maxttl);
 	}
 
-	public function delete($key, $group = 'default')
+	protected function do_delete($key, $group)
 	{
-		parent::delete($key, $group);
 		return eaccelerator_rm($this->getKey($group, $key));
 	}
 
-	public function flush()
+	protected function do_flush()
 	{
 		$prefix = $this->prefix;
 		$len    = strlen($prefix);
@@ -55,42 +54,18 @@ final class EMOCEAcceleratorCache extends EMOCBaseCache
 
 			unset($x);
 		}
-
-		parent::flush();
 	}
 
-	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	protected function do_get($group, $key, &$found, $ttl)
 	{
-		$found = false;
-		if (!$this->enabled) {
-			return false;
-		}
-
-		if (!$force) {
-			$result = $this->fast_get($key, $group, $found);
-			if ($found) {
-				return $result;
-			}
-		}
-
-		if ($this->persist && !isset($this->np_groups[$group])) {
-			$result = eaccelerator_get($this->getKey($group, $key));
-
-			if (null !== $result) {
-				$found  = true;
-				$result = unserialize($result);
-				parent::fast_set($key, $result, $group, 0);
-				return $result;
-			}
-		}
-
-		return false;
+		$result = eaccelerator_get($this->getKey($group, $key));
+		$found  = (null !== $result);
+		return $result;
 	}
 
-	protected function fast_set($key, $data, $group, $ttl)
+	protected function do_set($key, $data, $group, $ttl)
 	{
-		parent::fast_set($key, $data, $group, $ttl);
-		return eaccelerator_put($this->getKey($group, $key), serialize($data), $ttl);
+		return eaccelerator_put($this->getKey($group, $key), $data, $ttl);
 	}
 
 	protected function getKey($group, $key)

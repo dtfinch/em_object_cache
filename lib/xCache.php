@@ -20,20 +20,18 @@ final class EMOCXCache extends EMOCBaseCache
 		$this->prefix = (empty($data['prefix'])) ? md5($_SERVER['HTTP_HOST']) : $data['prefix'];
 
 		if ('cli' == PHP_SAPI || !xcache_set($this->prefix . '/xcache-test', $data, 1)) {
-			// We are really out of memory here
 			$persist = false;
 		}
 
 		parent::__construct($data, $enabled, $persist, $maxttl);
 	}
 
-	public function delete($key, $group = 'default')
+	protected function do_delete($key, $group)
 	{
-		parent::delete($key, $group);
 		return xcache_unset($this->getKey($group, $key));
 	}
 
-	public function flush()
+	protected function do_flush()
 	{
 		if (function_exists('xcache_unset_by_prefix')) {
 			xcache_unset_by_prefix($this->prefix . '/');
@@ -42,42 +40,18 @@ final class EMOCXCache extends EMOCBaseCache
 		else {
 			xcache_clear_cache(XC_TYPE_VAR, 0);
 		}
-
-		parent::flush();
 	}
 
-	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	protected function do_get($group, $key, &$found, $ttl)
 	{
-		$found = false;
-		if (!$this->enabled) {
-			return false;
-		}
-
-		if (!$force) {
-			$result = $this->fast_get($key, $group, $found);
-			if ($found) {
-				return $result;
-			}
-		}
-
-		if ($this->persist && !isset($this->np_groups[$group])) {
-			$result = xcache_get($this->getKey($group, $key));
-
-			if (null !== $result) {
-				$found  = true;
-				$result = unserialize($result);
-				parent::fast_set($key, $result, $group, 0);
-				return $result;
-			}
-		}
-
-		return false;
+		$result = xcache_get($this->getKey($group, $key));
+		$found  = (null !== $result);
+		return $result;
 	}
 
-	protected function fast_set($key, $data, $group, $ttl)
+	protected function do_set($key, $data, $group, $ttl)
 	{
-		parent::fast_set($key, $data, $group, $ttl);
-		return xcache_set($this->getKey($group, $key), serialize($data), $ttl);
+		return xcache_set($this->getKey($group, $key), $data, $ttl);
 	}
 
 	protected function getKey($group, $key)

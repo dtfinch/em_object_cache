@@ -8,7 +8,7 @@ final class EMOCZendShmCache extends EMOCBaseCache
 	{
 		static $self = false;
 
-		if (false === $self) {
+		if (!$self) {
 			$self = new self($data, $enabled, $persist, $maxttl);
 		}
 
@@ -21,48 +21,25 @@ final class EMOCZendShmCache extends EMOCBaseCache
 		parent::__construct($data, $enabled, $persist, $maxttl);
 	}
 
-	public function delete($key, $group = 'default')
+	protected function do_delete($key, $group)
 	{
-		parent::delete($key, $group);
 		return zend_shm_cache_delete($this->getKey($group, $key));
 	}
 
-	public function flush()
+	protected function do_flush()
 	{
 		zend_shm_cache_clear($this->prefix);
-		parent::flush();
 	}
 
-	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	protected function do_get($group, $key, &$found, $ttl)
 	{
-		$found = false;
-		if (!$this->enabled) {
-			return false;
-		}
-
-		if (!$force) {
-			$result = $this->fast_get($key, $group, $found);
-			if ($found) {
-				return $result;
-			}
-		}
-
-		if ($this->persist && !isset($this->np_groups[$group])) {
-			$result = zend_shm_cache_fetch($this->getKey($group, $key));
-
-			if (false !== $result) {
-				$found = true;
-				parent::fast_set($key, $result, $group, 0);
-				return $result;
-			}
-		}
-
-		return false;
+		$result = zend_shm_cache_fetch($this->getKey($group, $key));
+		$found  = (false !== $result);
+		return $result;
 	}
 
-	protected function fast_set($key, $data, $group, $ttl)
+	protected function do_set($key, $data, $group, $ttl)
 	{
-		parent::fast_set($key, $data, $group, $ttl);
 		return zend_shm_cache_store($this->getKey($group, $key), $data, $ttl);
 	}
 

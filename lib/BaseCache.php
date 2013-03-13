@@ -49,7 +49,7 @@ class EMOCBaseCache
 		}
 	}
 
-	protected function __construct($data = array(), $enabled = true, $persist = true, $maxttl = 3600)
+	protected function __construct($data, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		$this->enabled = $enabled;
 		$this->persist = $persist && $enabled;
@@ -61,22 +61,6 @@ class EMOCBaseCache
 			$_wp_using_ext_object_cache = false;
 			$this->cache_enabled = false;
 		}
-	}
-
-	public function reset()
-	{
-		$this->close();
-		if ($this->cache) {
-			foreach ($this->cache as $group => &$x) {
-				if (!in_array($group, $this->global_groups)) {
-					unset($this->cache[$group]);
-				}
-			}
-
-			unset($x);
-		}
-
-		$this->blog_id = $GLOBALS['blog_id'];
 	}
 
 	public function add($key, $data, $group = 'default', $ttl = 0)
@@ -117,12 +101,48 @@ class EMOCBaseCache
 	public function delete($key, $group = 'default')
 	{
 		unset($this->cache[$group][$key]);
-		return true;
+		return $this->do_delete($key, $group);
 	}
 
 	public function flush()
 	{
 		$this->cache = array();
+		$this->do_flush();
+	}
+
+	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	{
+		if (!$this->enabled) {
+			$found = false;
+			return false;
+		}
+
+		return $this->fast_get($key, $group, $found);
+
+
+		$found = false;
+		if (!$this->enabled) {
+			return false;
+		}
+
+		if (!$force) {
+			$result = $this->fast_get($key, $group, $found);
+			if ($found) {
+				return $result;
+			}
+		}
+
+		if ($this->persist && !isset($this->np_groups[$group])) {
+			$result = $this->do_get($group, $key, $found, $ttl);
+
+			if ($found) {
+				$result = unserialize($result);
+				$this->cache[$group][$key] = $result;
+				return $result;
+			}
+		}
+
+		return false;
 	}
 
 	public function incr($key, $offset = 1, $group = 'default')
@@ -149,6 +169,31 @@ class EMOCBaseCache
 		return false;
 	}
 
+	public function replace($key, $data, $group, $ttl = 0)
+	{
+		if ($this->enabled && false !== $this->get($key, $group, $ttl)) {
+			return $this->set($key, $data, $group, $ttl);
+		}
+
+		return false;
+	}
+
+	public function reset()
+	{
+		$this->close();
+		if ($this->cache) {
+			foreach ($this->cache as $group => &$x) {
+				if (!in_array($group, $this->global_groups)) {
+					unset($this->cache[$group]);
+				}
+			}
+
+			unset($x);
+		}
+
+		$this->blog_id = $GLOBALS['blog_id'];
+	}
+
 	public function set($key, $data, $group = 'default', $ttl = 0)
 	{
 		if (!$this->enabled) {
@@ -171,23 +216,27 @@ class EMOCBaseCache
 		return $this->fast_set($key, $data, $group, $ttl);
 	}
 
-	protected function fast_set($key, $data, $group, $ttl)
+	protected function do_delete($key, $group)
 	{
-		$this->cache[$group][$key] = $data;
 		return true;
 	}
 
-	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	protected function do_get($group, $key, &$found, $ttl)
 	{
-		if (!$this->enabled) {
-			$found = false;
-			return false;
-		}
-
-		return $this->fast_get($key, $group, $found);
+		$found = false;
+		return false;
 	}
 
-	protected function fast_get($key, $group, &$found = null)
+	protected function do_flush()
+	{
+	}
+
+	protected function do_set($key, $data, $group, $ttl)
+	{
+		return true;
+	}
+
+	private function fast_get($key, $group, &$found = null)
 	{
 		if (isset($this->cache[$group][$key])) {
 			$found  = true;
@@ -199,18 +248,16 @@ class EMOCBaseCache
 		return false;
 	}
 
+	private function fast_set($key, $data, $group, $ttl)
+	{
+		$this->cache[$group][$key] = $data;
+		$data = serialize($data);
+		return $this->do_set($key, $data, $group, $ttl);
+	}
+
 	protected function has_group($group)
 	{
 		return isset($this->cache[$group]);
-	}
-
-	public function replace($key, $data, $group, $ttl = 0)
-	{
-		if ($this->enabled && false !== $this->get($key, $group, $ttl)) {
-			return $this->set($key, $data, $group, $ttl);
-		}
-
-		return false;
 	}
 
 	public function addNonPersistentGroups(array $groups)

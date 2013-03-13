@@ -29,13 +29,12 @@ final class EMOCApcCache extends EMOCBaseCache
 		parent::__construct($data, $enabled, $persist, $maxttl);
 	}
 
-	public function delete($key, $group = 'default')
+	protected function do_delete($key, $group)
 	{
-		parent::delete($key, $group);
 		return apc_delete($this->getKey($group, $key));
 	}
 
-	public function flush()
+	protected function do_flush()
 	{
 		$prefix = $this->prefix;
 		$len    = strlen($this->prefix);
@@ -50,44 +49,17 @@ final class EMOCApcCache extends EMOCBaseCache
 
 			unset($x);
 		}
-
-		parent::flush();
 	}
 
-	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
+	protected function do_get($group, $key, &$found, $ttl)
 	{
-		$found = false;
-		if (!$this->enabled) {
-			return false;
-		}
-
-		if (!$force) {
-			$result = $this->fast_get($key, $group, $found);
-			if ($found) {
-				return $result;
-			}
-		}
-
-		if ($this->persist && !isset($this->np_groups[$group])) {
-			$success = false;
-			$k       = $this->getKey($group, $key);
-			$result  = apc_fetch($k, $success);
-
-			if ($success) {
-				$found  = true;
-				$result = unserialize($result);
-				parent::fast_set($key, $result, $group, 0);
-				return $result;
-			}
-		}
-
-		return false;
+		$result = apc_fetch($this->getKey($group, $key), $found);
+		return $result;
 	}
 
-	protected function fast_set($key, $data, $group, $ttl)
+	protected function do_set($key, $data, $group, $ttl)
 	{
-		parent::fast_set($key, $data, $group, $ttl);
-		return apc_store($this->getKey($group, $key), serialize($data), $ttl);
+		return apc_store($this->getKey($group, $key), $data, $ttl);
 	}
 
 	protected function getKey($group, $key)
