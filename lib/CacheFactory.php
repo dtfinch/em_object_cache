@@ -50,6 +50,7 @@ final class EMOCCacheFactory
 
 		include(self::$path . DIRECTORY_SEPARATOR . $item[1] . '.php');
 		$params = isset($options['options'][$engine]) ? $options['options'][$engine] : array();
+		$params['engine'] = $engine;
 
 		return call_user_func(array($item[0], 'instance'), $params, $enabled, $persist, $maxttl);
 	}
