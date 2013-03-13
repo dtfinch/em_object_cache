@@ -15,8 +15,6 @@ class EMOCBaseCache
 
 	protected $blog_id;
 
-	private $override = false;
-
 	private static $serialize   = 'serialize';
 	private static $unserialize = 'unserialize';
 
@@ -66,14 +64,14 @@ class EMOCBaseCache
 			self::$unserialize = 'igbinary_unserialize';
 		}
 
+		if ('basecache' == $data['engine']) {
+			$this->persist = false;
+		}
+
 		if (!$this->persist) {
 			global $_wp_using_ext_object_cache;
 			$_wp_using_ext_object_cache = false;
 			$this->cache_enabled = false;
-		}
-
-		if ('basecache' == $data['engine']) {
-			$this->override = true;
 		}
 	}
 
@@ -131,7 +129,7 @@ class EMOCBaseCache
 			return false;
 		}
 
-		if (!$force || $this->override) {
+		if (!$force || !$this->persist) {
 			$result = $this->fast_get($key, $group, $found);
 			if ($found) {
 				return $result;
