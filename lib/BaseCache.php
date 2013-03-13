@@ -265,7 +265,7 @@ class EMOCBaseCache
 		return $this->fast_set($key, $data, $group, $ttl);
 	}
 
-	public function swicth_to_blog($blog_id)
+	public function switch_to_blog($blog_id)
 	{
 		$this->blog_prefix = $this->multisite ? ($blog_id . ':') : '';
 	}
