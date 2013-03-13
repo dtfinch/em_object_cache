@@ -15,6 +15,9 @@ class EMOCBaseCache
 
 	protected $blog_id;
 
+	private static $serialize   = 'serialize';
+	private static $unserialize = 'unserialize';
+
 	/**
 	 * @desc To stay compatible with SimpleTags
 	 */
@@ -55,6 +58,11 @@ class EMOCBaseCache
 		$this->persist = $persist && $enabled;
 		$this->maxttl  = $maxttl;
 		$this->blog_id = $GLOBALS['blog_id'];
+
+		if (function_exists('igbinary_serialize')) {
+			self::$serialize   = 'igbinary_serialize';
+			self::$unserialize = 'igbinary_unserialize';
+		}
 
 		if (!$this->persist) {
 			global $_wp_using_ext_object_cache;
@@ -136,7 +144,8 @@ class EMOCBaseCache
 			$result = $this->do_get($group, $key, $found, $ttl);
 
 			if ($found) {
-				$result = unserialize($result);
+				$func   = self::$unserialize;
+				$result = $func($result);
 				$this->cache[$group][$key] = $result;
 				return $result;
 			}
@@ -251,7 +260,8 @@ class EMOCBaseCache
 	private function fast_set($key, $data, $group, $ttl)
 	{
 		$this->cache[$group][$key] = $data;
-		$data = serialize($data);
+		$func = self::$serialize;
+		$data = $func($data);
 		return $this->do_set($key, $data, $group, $ttl);
 	}
 
