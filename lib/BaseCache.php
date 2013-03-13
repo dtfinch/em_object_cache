@@ -152,6 +152,7 @@ class EMOCBaseCache
 
 	private function get_resolved($key, $group, $force, &$found, $ttl)
 	{
+		$found = false;
 		if (!$force || !$this->persist) {
 			$result = $this->fast_get($key, $group, $found);
 			if ($found) {
