@@ -72,8 +72,7 @@ class EMOCBaseCache
 		}
 
 		if (!$this->persist) {
-			global $_wp_using_ext_object_cache;
-			$_wp_using_ext_object_cache = false;
+			$GLOBALS['_wp_using_ext_object_cache'] = false;
 			$this->cache_enabled = false;
 		}
 	}
@@ -268,6 +267,11 @@ class EMOCBaseCache
 
 	public function switch_to_blog($blog_id)
 	{
+		// Work around a weird bug when $_wp_using_ext_object_cache somehow resets to true
+		if (!$this->persist) {
+			$GLOBALS['_wp_using_ext_object_cache'] = false;
+		}
+
 		$this->blog_prefix = $this->multisite ? ($blog_id . ':') : '';
 	}
 
