@@ -120,14 +120,6 @@ class EMOCBaseCache
 
 	public function get($key, $group = 'default', $force = false, &$found = null, $ttl = 3600)
 	{
-		if (!$this->enabled) {
-			$found = false;
-			return false;
-		}
-
-		return $this->fast_get($key, $group, $found);
-
-
 		$found = false;
 		if (!$this->enabled) {
 			return false;
