@@ -227,6 +227,20 @@ else {
 	}
 
 	/**
+	 * Switch the interal blog id.
+	 *
+	 * This changes the blog id used to create keys in blog specific groups.
+	 *
+	 * @uses $wp_object_cache Object Cache Class
+	 * @param int $blog_id Blog ID
+	 */
+	function wp_cache_switch_to_blog($blog_id)
+	{
+		global $wp_object_cache;
+		return $wp_object_cache->switch_to_blog((int)$blog_id);
+	}
+
+	/**
 	 * Adds a group or set of groups to the list of global groups.
 	 *
 	 * @uses $wp_object_cache Object Cache Class

@@ -13,7 +13,8 @@ class EMOCBaseCache
 	protected $np_groups = array();
 	protected $global_groups = array();
 
-	protected $blog_id;
+	protected $blog_prefix;
+	protected $multisite;
 
 	private static $serialize   = 'serialize';
 	private static $unserialize = 'unserialize';
@@ -57,7 +58,9 @@ class EMOCBaseCache
 		$this->enabled = $enabled;
 		$this->persist = $persist && $enabled;
 		$this->maxttl  = $maxttl;
-		$this->blog_id = $GLOBALS['blog_id'];
+
+		$this->multisite   = function_exists('is_multisite') && is_multisite();
+		$this->blog_prefix = $this->multisite ? ($GLOBALS['blog_id'] . ':') : '';
 
 		if (function_exists('igbinary_serialize')) {
 			self::$serialize   = 'igbinary_serialize';
@@ -77,7 +80,13 @@ class EMOCBaseCache
 
 	public function add($key, $data, $group = 'default', $ttl = 0)
 	{
-		if ($this->enabled && false === $this->get($key, $group, $ttl)) {
+		if (!$this->enabled) {
+			return false;
+		}
+
+		$found = null;
+		$this->get($key, $group, false, $found, $ttl);
+		if (!$found) {
 			return $this->set($key, $data, $group, $ttl);
 		}
 
@@ -103,6 +112,7 @@ class EMOCBaseCache
 				$val = 0;
 			}
 
+			$this->resolveKey($group, $key);
 			$this->fast_set($key, $val, $group, 0);
 			return $val;
 		}
@@ -112,6 +122,7 @@ class EMOCBaseCache
 
 	public function delete($key, $group = 'default')
 	{
+		$this->resolveKey($group, $key);
 		unset($this->cache[$group][$key]);
 		return $this->do_delete($key, $group);
 	}
@@ -129,6 +140,7 @@ class EMOCBaseCache
 			return false;
 		}
 
+		$this->resolveKey($group, $key);
 		if (!$force || !$this->persist) {
 			$result = $this->fast_get($key, $group, $found);
 			if ($found) {
@@ -167,6 +179,7 @@ class EMOCBaseCache
 				$val = 0;
 			}
 
+			$this->resolveKey($group, $key);
 			$this->fast_set($key, $val, $group, 0);
 			return $val;
 		}
@@ -176,7 +189,13 @@ class EMOCBaseCache
 
 	public function replace($key, $data, $group, $ttl = 0)
 	{
-		if ($this->enabled && false !== $this->get($key, $group, $ttl)) {
+		if (!$this->enabled) {
+			return false;
+		}
+
+		$found = null;
+		$this->get($key, $group, false, &$found, $ttl);
+		if ($found) {
 			return $this->set($key, $data, $group, $ttl);
 		}
 
@@ -196,7 +215,7 @@ class EMOCBaseCache
 			unset($x);
 		}
 
-		$this->blog_id = $GLOBALS['blog_id'];
+		$this->blog_prefix = $this->multisite ? ($GLOBALS['blog_id'] . ':') : '';
 	}
 
 	public function set($key, $data, $group = 'default', $ttl = 0)
@@ -213,12 +232,18 @@ class EMOCBaseCache
 			$data = clone($data);
 		}
 
+		$this->resolveKey($group, $key);
 		if (!$this->persist) {
 			$this->cache[$group][$key] = $data;
 			return true;
 		}
 
 		return $this->fast_set($key, $data, $group, $ttl);
+	}
+
+	public function swicth_to_blog($blog_id)
+	{
+		$this->blog_prefix = $this->multisite ? ($blog_id . ':') : '';
 	}
 
 	protected function do_delete($key, $group)
@@ -300,6 +325,13 @@ class EMOCBaseCache
 	public function clearNonPersistentGroups()
 	{
 		$this->np_groups = array();
+	}
+
+	protected function resolveKey($group, &$key)
+	{
+		if ($this->multisite && !isset($this->global_groups[$group])) {
+			$key = $this->blog_prefix . $key;
+		}
 	}
 }
 
