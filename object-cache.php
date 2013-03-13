@@ -253,7 +253,7 @@ else {
 			$groups = array($groups);
 		}
 
-		$wp_object_cache->addGlobalGroups($groups);
+		$wp_object_cache->add_global_groups($groups);
 	}
 
 	/**
@@ -269,6 +269,6 @@ else {
 			$groups = array($groups);
 		}
 
-		$wp_object_cache->addNonPersistentGroups($groups);
+		$wp_object_cache->add_non_persistent_groups($groups);
 	}
 }

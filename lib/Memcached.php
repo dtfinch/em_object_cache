@@ -5,7 +5,7 @@ class EMOCMemcached extends EMOCBaseCache
 	private $prefix;
 	private $memcached;
 
-	public static function instance($data, $enabled = true, $persist = true, $maxttl = 3600)
+	public static function instance(array $data, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		static $self = false;
 
@@ -16,7 +16,7 @@ class EMOCMemcached extends EMOCBaseCache
 		return $self;
 	}
 
-	protected function __construct($data, $enabled = true, $persist = true, $maxttl = 3600)
+	protected function __construct(array $data, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		$this->prefix = (empty($data['prefix'])) ? md5($_SERVER['HTTP_HOST']) : $data['prefix'];
 
@@ -59,13 +59,6 @@ class EMOCMemcached extends EMOCBaseCache
 
 	protected function getKey($group, $key)
 	{
-		if (!isset($this->global_groups[$group])) {
-			$prefix = $this->prefix . ':' . $this->blog_id;
-		}
-		else {
-			$prefix = $this->prefix;
-		}
-
-		return $prefix . '/' . $group . '/' . $key;
+		return $this->prefix . '/' . $group . '/' . $key;
 	}
 }

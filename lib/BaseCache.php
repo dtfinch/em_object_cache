@@ -10,11 +10,11 @@ class EMOCBaseCache
 	protected $persist = true;
 	protected $maxttl  = 3600;
 
-	protected $np_groups = array();
+	protected $np_groups     = array();
 	protected $global_groups = array();
 
-	protected $blog_prefix;
-	protected $multisite;
+	private $blog_prefix;
+	private $multisite;
 
 	private static $serialize   = 'serialize';
 	private static $unserialize = 'unserialize';
@@ -24,7 +24,7 @@ class EMOCBaseCache
 	 */
 	protected $cache_enabled = true;
 
-	public static function instance($data, $enabled = true, $persist = true, $maxttl = 3600)
+	public static function instance(array $data, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		static $self = false;
 
@@ -37,7 +37,7 @@ class EMOCBaseCache
 
 	public function __get($key)
 	{
-		static $keys = array('global_groups' => 'global_groups', 'cache_enabled' => 'cache_enabled', 'enabled' => 'enabled');
+		static $keys = array('global_groups' => true, 'cache_enabled' => true, 'enabled' => true);
 		return isset($keys[$key]) ? $this->$key : null;
 	}
 
@@ -53,7 +53,7 @@ class EMOCBaseCache
 		}
 	}
 
-	protected function __construct($data, $enabled = true, $persist = true, $maxttl = 3600)
+	protected function __construct(array $data, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		$this->enabled = $enabled;
 		$this->persist = $persist && $enabled;
@@ -85,9 +85,10 @@ class EMOCBaseCache
 		}
 
 		$found = null;
-		$this->get($key, $group, false, $found, $ttl);
+		$this->resolveKey($group, $key);
+		$this->get_resolved($key, $group, false, $found, $ttl);
 		if (!$found) {
-			return $this->set($key, $data, $group, $ttl);
+			return $this->set_resolved($key, $data, $group, $ttl);
 		}
 
 		return false;
@@ -99,8 +100,14 @@ class EMOCBaseCache
 
 	public function decr($key, $offset = 1, $group = 'default')
 	{
+		if (!$this->enabled) {
+			return false;
+		}
+
 		$found = null;
-		$val   = $this->get($key, $group, false, $found);
+		$this->resolveKey($group, $key);
+
+		$val = $this->get_resolved($key, $group, false, $found);
 
 		if ($found) {
 			if (!is_numeric($val)) {
@@ -112,8 +119,7 @@ class EMOCBaseCache
 				$val = 0;
 			}
 
-			$this->resolveKey($group, $key);
-			$this->fast_set($key, $val, $group, 0);
+			$this->fast_set($key, $val, $group, $this->maxttl);
 			return $val;
 		}
 
@@ -141,6 +147,11 @@ class EMOCBaseCache
 		}
 
 		$this->resolveKey($group, $key);
+		return $this->get_resolved($key, $group, $force, $found, $ttl);
+	}
+
+	private function get_resolved($key, $group, $force, &$found, $ttl)
+	{
 		if (!$force || !$this->persist) {
 			$result = $this->fast_get($key, $group, $found);
 			if ($found) {
@@ -164,8 +175,14 @@ class EMOCBaseCache
 
 	public function incr($key, $offset = 1, $group = 'default')
 	{
+		if (!$this->enabled) {
+			return false;
+		}
+
 		$found = null;
-		$val   = $this->get($key, $group, false, $found);
+		$this->resolveKey($group, $key);
+
+		$val = $this->get_resolved($key, $group, false, $found);
 
 		if ($found) {
 			if (!is_numeric($val)) {
@@ -180,7 +197,7 @@ class EMOCBaseCache
 			}
 
 			$this->resolveKey($group, $key);
-			$this->fast_set($key, $val, $group, 0);
+			$this->fast_set($key, $val, $group, $this->maxttl);
 			return $val;
 		}
 
@@ -194,9 +211,11 @@ class EMOCBaseCache
 		}
 
 		$found = null;
-		$this->get($key, $group, false, &$found, $ttl);
+		$this->resolveKey($group, $key);
+
+		$this->get_resolved($key, $group, false, &$found, $ttl);
 		if ($found) {
-			return $this->set($key, $data, $group, $ttl);
+			return $this->set_resolved($key, $data, $group, $ttl);
 		}
 
 		return false;
@@ -207,7 +226,7 @@ class EMOCBaseCache
 		$this->close();
 		if ($this->cache) {
 			foreach ($this->cache as $group => &$x) {
-				if (!in_array($group, $this->global_groups)) {
+				if (!isset($this->global_groups[$group])) {
 					unset($this->cache[$group]);
 				}
 			}
@@ -224,6 +243,12 @@ class EMOCBaseCache
 			return false;
 		}
 
+		$this->resolveKey($group, $key);
+		return $this->set_resolved($key, $data, $group, $ttl);
+	}
+
+	private function set_resolved($key, $data, $group, $ttl)
+	{
 		if (!$ttl && $this->maxttl) {
 			$ttl = $this->maxttl;
 		}
@@ -232,7 +257,6 @@ class EMOCBaseCache
 			$data = clone($data);
 		}
 
-		$this->resolveKey($group, $key);
 		if (!$this->persist) {
 			$this->cache[$group][$key] = $data;
 			return true;
@@ -291,38 +315,24 @@ class EMOCBaseCache
 		return isset($this->cache[$group]);
 	}
 
-	public function addNonPersistentGroups(array $groups)
+	public function add_non_persistent_groups(array $groups)
 	{
-		$this->np_groups = array_merge(
-			array_values($this->np_groups),
-			$groups
-		);
-
-		$this->np_groups = array_unique($this->np_groups);
-		$this->np_groups = array_combine($this->np_groups, $this->np_groups);
+		$groups = array_fill_keys($groups, true);
+		$this->np_groups = array_merge($this->np_groups, $groups);
 	}
 
-	public function addGlobalGroups(array $groups)
+	public function add_global_groups(array $groups)
 	{
-		if (!is_array($this->global_groups)) {
-			$this->global_groups = array();
-		}
-
-		$this->global_groups = array_merge(
-			array_values($this->global_groups),
-			$groups
-		);
-
-		$this->global_groups = array_unique($this->global_groups);
-		$this->global_groups = array_combine($this->global_groups, $this->global_groups);
+		$groups = array_fill_keys($groups, true);
+		$this->global_groups = array_merge($this->global_groups, $groups);
 	}
 
-	public function clearGlobalGroups()
+	public function clear_global_groups()
 	{
 		$this->global_groups = array();
 	}
 
-	public function clearNonPersistentGroups()
+	public function clear_non_persistent_groups()
 	{
 		$this->np_groups = array();
 	}

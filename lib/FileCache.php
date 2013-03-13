@@ -5,7 +5,7 @@ final class EMOCFileCache extends EMOCBaseCache
 	protected $dir;
 	protected $known_groups = array();
 
-	public static function instance($params, $enabled = true, $persist = true, $maxttl = 3600)
+	public static function instance(array $params, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		static $self = false;
 
@@ -16,7 +16,7 @@ final class EMOCFileCache extends EMOCBaseCache
 		return $self;
 	}
 
-	protected function __construct($params, $enabled = true, $persist = true, $maxttl = 3600)
+	protected function __construct(array $params, $enabled = true, $persist = true, $maxttl = 3600)
 	{
 		if (empty($params['path'])) {
 			$path = dirname(dirname(__FILE__)) . '/cache';
@@ -109,15 +109,11 @@ final class EMOCFileCache extends EMOCBaseCache
 
 	protected function getKey($group, $key = false)
 	{
-		$path = $this->dir . '/';
-
-		if (!isset($this->global_groups[$group])) {
-			$path .= $this->blog_id . '_';
-		}
+		$path = $this->dir . DIRECTORY_SEPARATOR;
 
 		$path = $path . urlencode($group);
 		if ($key) {
-			 $path .= '/' . urlencode($key) . '.cache';
+			 $path .= DIRECTORY_SEPARATOR . urlencode($key) . '.cache';
 		}
 
 		return $path;
