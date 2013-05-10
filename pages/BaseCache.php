@@ -1,3 +1,4 @@
+<?php defined('ABSPATH') or die(); ?>
 <div id="basecache-options">
 	<h2>BaseCache Options</h2>
 

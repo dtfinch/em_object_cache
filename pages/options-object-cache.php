@@ -1,3 +1,4 @@
+<?php defined('ABSPATH') or die(); ?>
 <div class="wrap">
 	<h2><?php echo($GLOBALS['title']); ?></h2>
 
