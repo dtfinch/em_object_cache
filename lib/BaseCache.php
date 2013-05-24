@@ -213,7 +213,7 @@ class EMOCBaseCache
 		$found = null;
 		$this->resolveKey($group, $key);
 
-		$this->get_resolved($key, $group, false, &$found, $ttl);
+		$this->get_resolved($key, $group, false, $found, $ttl);
 		if ($found) {
 			return $this->set_resolved($key, $data, $group, $ttl);
 		}
