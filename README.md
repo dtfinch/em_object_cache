@@ -8,7 +8,7 @@ The plugin implements object level persistent caching and can be used instead of
 Unlike WP Super Cache, Hyper Cache and other plugins, EM Object Cache does not cache the entire page; instead, it caches the data WordPress explicitly asks it to cache (using `wp_cache_xxx()` API functions).
 Although this means that the performance will be less than with, say, WP Super Cache, all your pages remain dynamic.
 
-EM Object Cache won't help you much if the plugins or theme you are using do not use WordPress Cache API.
+EM Object Cache won't help you much if the plugins or theme you are using do not use [WordPress Cache API](http://codex.wordpress.org/Class_Reference/WP_Object_Cache).
 This is by design, since the plugin tries to play nice. However, for most WordPress installations this will not be critical.
 
 EM Object Cache significantly reduces the load from your database. Say, my blog's home page without the plugin
