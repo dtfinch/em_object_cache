@@ -17,11 +17,11 @@ Unlike DB Cache/DB Cache Reloaded, the plugin will work in the Admin Panel and s
 
 ## Installation
 
-  1. Upload `em-object-cache` folder to the `wp-content/plugins/` directory.
+  1. Upload `em_object_cache` folder to the `wp-content/plugins/` directory.
   2. Please make sure that `wp-content` directory is writable by the web server: the plugin will need to copy `object-cache.php` file into it.
-  3. Please make sure that `wp-content/plugins/object-cache` directory is writable by the web server: the plugin will store its configuration (`options.php`) there.
+  3. Please make sure that `wp-content/plugins/em_object_cache` directory is writable by the web server: the plugin will store its configuration (`options.php`) there.
   4. Activate the plugin in the 'Plugins' menu in WordPress.
-  5. Make sure that `wp-content/object-cache.php` file exists. If it is not, please copy it from `wp-content/plugins/em-object-cache/object-cache.php`
+  5. Make sure that `wp-content/object-cache.php` file exists. If it is not, please copy it from `wp-content/plugins/em_object_cache/object-cache.php`
   6. `wp-content/object-cache.php` file wust me writable by the server since plugin stores its options in that file.
   7. That's all :-)
 
