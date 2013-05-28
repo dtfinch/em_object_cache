@@ -14,7 +14,7 @@ class EMOCPageHandlers
 
 	private function __construct()
 	{
-		add_action('load-em-object-cache/pages/options-object-cache.php', array($this, 'load_generic_options_page'));
+		add_action('load-em_object_cache/pages/options-object-cache.php', array($this, 'load_generic_options_page'));
 		add_action('admin_post_save_emoc_generic_options',                array($this, 'admin_post_save_emoc_generic_options'));
 		add_action('admin_post_purge_emoc_cache',                         array($this, 'admin_post_purge_emoc_cache'));
 
@@ -22,14 +22,14 @@ class EMOCPageHandlers
 		if (!empty($engines)) {
 			foreach ($engines as $id => $engine) {
 				if ($engine[2]) {
-					add_action("load-em-object-cache/pages/{$engine[1]}.php", array($this, 'load_ce_options'));
+					add_action("load-em_object_cache/pages/{$engine[1]}.php", array($this, 'load_ce_options'));
 					add_action("admin_post_save_emoc_options_{$id}",          array($this, 'prepare_post_data'), 10);
 					add_action("admin_post_save_emoc_options_{$id}",          array($this, 'save_ce_options'),   30);
 				}
 
 				if (2 == $engine[2]) {
-					if (include_once(WP_PLUGIN_DIR . '/em-object-cache/lib/ph/' . $engine[1] . '.php')) {
-						add_action("load-em-object-cache/pages/{$engine[1]}.php", array('PH_' . $engine[0], 'load_options'));
+					if (include_once(WP_PLUGIN_DIR . '/em_object_cache/lib/ph/' . $engine[1] . '.php')) {
+						add_action("load-em_object_cache/pages/{$engine[1]}.php", array('PH_' . $engine[0], 'load_options'));
 						add_action("admin_post_save_emoc_options_{$id}",          array('PH_' . $engine[0], 'save_options'), 20);
 					}
 				}
@@ -61,7 +61,7 @@ class EMOCPageHandlers
 		$options = EMObjectCache::instance()->getOptions();
 		$matches = array();
 
-		if (preg_match('!^em-object-cache/pages/([^.]+)\\.php$!', stripslashes($_GET['page']), $matches)) {
+		if (preg_match('!^em_object_cache/pages/([^.]+)\\.php$!', stripslashes($_GET['page']), $matches)) {
 			$file = $matches[1];
 			unset($matches);
 			$engines = EMOCCacheFactory::getEngines();
