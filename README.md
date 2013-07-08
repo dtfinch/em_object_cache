@@ -30,3 +30,12 @@ Unlike DB Cache/DB Cache Reloaded, the plugin will work in the Admin Panel and s
   1. Please make sure that `wp-content` directory is writable by the web server: the plugin will need to delete `object-cache.php` from it.
   2. Deactivate/uninstall the plugin in the 'Plugins' menu in WordPress.
   3. Please verify that `wp-content/object-cache.php` file was removed.
+
+## Branches
+
+Right now there are two branches:
+  * master: this is the development branch;
+  * wordpress.org: this is the snapshot of EMOC @ wordpress.org plugin repository. Its main difference is that the plugin is located in `em-object-cache`,
+    not in `em_object_cache` (due to WP SVN rules). If you plan to update the plugin from the official WordPress plugin repository, please use this branch.
+
+The reason to keep two branches is to keep the existsing plugin installations safe to update.
