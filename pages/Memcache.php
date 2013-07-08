@@ -2,7 +2,7 @@
 <div class="wrap">
 	<h2><?php _e("Memcache Caching Engine Options", 'emobjectcache'); ?></h2>
 
-	<?php include(WP_PLUGIN_DIR . '/em_object_cache/pages/header.php'); ?>
+	<?php include(WP_PLUGIN_DIR . '/em-object-cache/pages/header.php'); ?>
 
 	<form method="post" action="<?php echo esc_attr(admin_url('admin-post.php')); ?>">
 		<table class="widefat">

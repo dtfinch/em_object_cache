@@ -4,13 +4,13 @@ Plugin Name: EM Object Cache
 Plugin URI: http://blog.sjinks.pro/wordpress/plugins/776-sj-object-cache-faster-object-cache-for-wordpress/
 Description: Object Cache for WordPress - a replacement for the standard WP_Object_Cache
 Author: Vladimir Kolesnikov
-Version: 2.0
+Version: 2.1
 Author URI: http://www.extrememember.com/
 */
 
 defined('ABSPATH') or die();
 
-require_once(WP_PLUGIN_DIR . '/em_object_cache/lib/CacheFactory.php');
+require_once(WP_PLUGIN_DIR . '/em-object-cache/lib/CacheFactory.php');
 
 class EMObjectCache
 {
@@ -29,8 +29,8 @@ class EMObjectCache
 
 	private function __construct()
 	{
-		add_action('activate_em_object_cache/core.php',   array($this, 'activate'));
-		add_action('deactivate_em_object_cache/core.php', array($this, 'deactivate'));
+		add_action('activate_em-object-cache/core.php',   array($this, 'activate'));
+		add_action('deactivate_em-object-cache/core.php', array($this, 'deactivate'));
 		add_action('init', array($this, 'init'));
 	}
 
@@ -44,13 +44,13 @@ class EMObjectCache
 			add_action('admin_menu', array($this, 'admin_menu'));
 			add_action('admin_init', array($this, 'admin_init'));
 
-			load_plugin_textdomain('emobjectcache', false, 'em_object_cache/lang');
+			load_plugin_textdomain('emobjectcache', false, 'em-object-cache/lang');
 		}
 	}
 
 	public function admin_init()
 	{
-		require_once(WP_PLUGIN_DIR . "/em_object_cache/lib/PageHandlers.php");
+		require_once(WP_PLUGIN_DIR . "/em-object-cache/lib/PageHandlers.php");
 	}
 
 	public function loadOptions()
@@ -101,14 +101,14 @@ class EMObjectCache
 	public function writeOptions($options)
 	{
 		$data = '<?php $GLOBALS["__emoc_options"] = ' . var_export($options, true) . '; ?>';
-		return file_put_contents(WP_PLUGIN_DIR . '/em_object_cache/options.php', $data, LOCK_EX);
+		return file_put_contents(WP_PLUGIN_DIR . '/em-object-cache/options.php', $data, LOCK_EX);
 	}
 
 	public function activate()
 	{
 		$this->loadOptions();
-		if (!copy(WP_PLUGIN_DIR . '/em_object_cache/object-cache.php', WP_CONTENT_DIR . '/object-cache.php')) {
-			wp_die(__(sprintf("There was an error copying <code>%s</code> to <code>%s</code>", WP_PLUGIN_DIR . '/em_object_cache/object-cache.php', WP_CONTENT_DIR . '/object-cache.php')));
+		if (!copy(WP_PLUGIN_DIR . '/em-object-cache/object-cache.php', WP_CONTENT_DIR . '/object-cache.php')) {
+			wp_die(__(sprintf("There was an error copying <code>%s</code> to <code>%s</code>", WP_PLUGIN_DIR . '/em-object-cache/object-cache.php', WP_CONTENT_DIR . '/object-cache.php')));
 		}
 	}
 
@@ -123,14 +123,14 @@ class EMObjectCache
 
 	public function admin_menu()
 	{
-		add_menu_page(__('EM Object Cache', 'emobjectcache'), __('EM Object Cache', 'emobjectcache'), 'manage_options', 'em_object_cache/pages/options-object-cache.php');
-		add_submenu_page('em_object_cache/pages/options-object-cache.php', __('Generic Options', 'emobjectcache'), __('Generic Options', 'emobjectcache'), 'manage_options', 'em_object_cache/pages/options-object-cache.php');
+		add_menu_page(__('EM Object Cache', 'emobjectcache'), __('EM Object Cache', 'emobjectcache'), 'manage_options', 'em-object-cache/pages/options-object-cache.php');
+		add_submenu_page('em-object-cache/pages/options-object-cache.php', __('Generic Options', 'emobjectcache'), __('Generic Options', 'emobjectcache'), 'manage_options', 'em-object-cache/pages/options-object-cache.php');
 
 		$engines = EMOCCacheFactory::getEngines();
 		if (!empty($engines)) {
 			foreach ($engines as $engine) {
 				if ($engine[2]) {
-					add_submenu_page('em_object_cache/pages/options-object-cache.php', sprintf(__('%1$s Options', 'emobjectcache'), $engine[3]), $engine[3], 'manage_options', "em_object_cache/pages/{$engine[1]}.php");
+					add_submenu_page('em-object-cache/pages/options-object-cache.php', sprintf(__('%1$s Options', 'emobjectcache'), $engine[3]), $engine[3], 'manage_options', "em-object-cache/pages/{$engine[1]}.php");
 				}
 			}
 		}

@@ -4,10 +4,10 @@
 defined('ABSPATH') or die();
 
 if (defined('WP_PLUGIN_DIR')) {
-	$result = @include_once(WP_PLUGIN_DIR . '/em_object_cache/lib/CacheFactory.php');
+	$result = @include_once(WP_PLUGIN_DIR . '/em-object-cache/lib/CacheFactory.php');
 }
 else {
-	$result = @include_once(WP_CONTENT_DIR . '/plugins/em_object_cache/lib/CacheFactory.php');
+	$result = @include_once(WP_CONTENT_DIR . '/plugins/em-object-cache/lib/CacheFactory.php');
 }
 
 if (false === $result) {
@@ -28,7 +28,7 @@ else {
 	EMOCCacheFactory::registerEngine('memcached',      'EMOCMemcached',         'Memcached',         'memcached',             2, 'Memcached');
 
 	$GLOBALS['__emoc_options'] = array();
-	@include(defined('WP_PLUGIN_DIR') ? (WP_PLUGIN_DIR . '/em_object_cache/options.php') : (WP_CONTENT_DIR . '/plugins/em_object_cache/options.php'));
+	@include(defined('WP_PLUGIN_DIR') ? (WP_PLUGIN_DIR . '/em-object-cache/options.php') : (WP_CONTENT_DIR . '/plugins/em-object-cache/options.php'));
 
 	/**
 	 * wp_cache_add() - Adds data to the cache, if the cache key doesn't aleady exist
