@@ -59,6 +59,7 @@ final class EMOCApcCache extends EMOCBaseCache
 
 	protected function do_set($key, $data, $group, $ttl)
 	{
+		if($ttl==0 || $ttl>$this->maxttl) $ttl = $this->maxttl;
 		return apc_store($this->getKey($group, $key), $data, $ttl);
 	}
 
